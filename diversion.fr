@@ -1,0 +1,35 @@
+module Diversion where
+
+data Digit = Zero | One
+derive Eq Digit
+type Binary = [Digit]
+instance Show Digit where
+    show Zero = "O"
+    show One = "I"
+count :: Int -> Int
+count digits =
+    length $ filter not_containing_adjacent_ones all_permutations
+    where
+        all_permutations = permute digits
+
+permute :: Int -> [Binary]
+permute 1 = [[Zero], [One]]
+permute digits = 
+    [(Zero:xs) | xs <- next] ++ [(One:xs) | xs <- next]
+    where
+        next = permute (digits - 1)
+
+not_containing_adjacent_ones :: Binary -> Bool
+not_containing_adjacent_ones [] = true
+not_containing_adjacent_ones (Zero:xs)
+    = not_containing_adjacent_ones xs
+not_containing_adjacent_ones (One:One:xs) = false
+not_containing_adjacent_ones (One:Zero:xs)
+    = not_containing_adjacent_ones xs
+not_containing_adjacent_ones [x] = true
+
+main _ = do
+    println $ 3 == (count 2)
+    println $ 5 == (count 3)
+    println $ permute 5
+
