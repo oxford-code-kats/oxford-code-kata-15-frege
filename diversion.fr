@@ -28,8 +28,11 @@ not_containing_adjacent_ones (One:Zero:xs)
     = not_containing_adjacent_ones xs
 not_containing_adjacent_ones [x] = true
 
+ints = ints_from 1
+    where ints_from n = n:(ints_from (n+1))
+
 main _ = do
     println $ 3 == (count 2)
     println $ 5 == (count 3)
-    println $ permute 5
+    println $ take 10 (map count ints)
 
