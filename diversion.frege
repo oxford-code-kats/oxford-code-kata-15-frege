@@ -1,0 +1,29 @@
+module Diversion where
+
+count :: Int -> Int
+count digits =
+    length $ filter not_containing_adjacent_ones all_permutations
+    where
+        all_permutations = permute digits
+
+permute :: Int -> [[Int]]
+permute 1 = [[0], [1]]
+permute digits = 
+    [(0:xs) | xs <- next] ++ [(1:xs) | xs <- next]
+    where
+        next = permute (digits - 1)
+
+not_containing_adjacent_ones :: [Int] -> Bool
+not_containing_adjacent_ones [] = true
+not_containing_adjacent_ones (x:y:xs)
+    | x == 1 && y == 1   = false
+    | otherwise          = not_containing_adjacent_ones (y:xs)
+not_containing_adjacent_ones (x:xs) 
+    | x == 0 = not_containing_adjacent_ones xs
+not_containing_adjacent_ones [x] = true
+
+main _ = do
+    println $ (3 == (count 2))
+    println $ (5 == (count 3))
+
+
